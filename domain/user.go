@@ -13,17 +13,3 @@ type User struct {
 }
 
 type Users []User
-
-type UserCreate struct {
-	UserID uuid.UUID `json:"user_id" db:"user_id"`
-	TextID uuid.UUID `json:"text_id" db:"text_id"`
-}
-
-type UserCreates []UserCreate
-
-type UserLike struct {
-	UserID uuid.UUID `json:"user_id" db:"user_id"`
-	TextID uuid.UUID `json:"text_id" db:"text_id"`
-}
-
-type UserLikes []UserLike
