@@ -23,7 +23,9 @@ func init() {
 	e.Use(middleware.Logger())
 	e.Use(session.Middleware(store))
 
-	userController := controller.NewUserController(dbHandler)
+	uuidHandler := new(UUIDHandler)
+
+	userController := controller.NewUserController(dbHandler, uuidHandler)
 
 	// e := e.Group("/api")
 	e.POST("/users", func(c echo.Context) error {

@@ -10,6 +10,7 @@ import (
 
 type UserRepository struct {
 	DbHandler
+	UUIDHandler
 }
 
 func (repo *UserRepository) FindAll() (domain.Users, error) {
