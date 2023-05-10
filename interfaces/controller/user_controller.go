@@ -15,12 +15,11 @@ type UserController struct {
 	Interactor usecase.UserInteractor
 }
 
-func NewUserController(handler database.DbHandler, uuidHandler database.UUIDHandler) *UserController {
+func NewUserController(handler database.DbHandler) *UserController {
 	return &UserController{
 		Interactor: usecase.UserInteractor{
 			UserRepository: &database.UserRepository{
-				DbHandler:   handler,
-				UUIDHandler: uuidHandler,
+				DbHandler: handler,
 			},
 		},
 	}
