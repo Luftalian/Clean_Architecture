@@ -1,8 +1,8 @@
 package database
 
-import "github.com/google/uuid"
+import "github.com/Luftalian/Clean_Architecture/domain"
 
 type UUIDHandler interface {
-	New() uuid.UUID
-	Parse(s string) (uuid.UUID, error)
+	New() domain.UUID
+	Parse(s string) (domain.UUID, error)
 }

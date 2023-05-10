@@ -4,8 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/google/uuid"
-
 	"github.com/Luftalian/Clean_Architecture/domain"
 	"github.com/Luftalian/Clean_Architecture/interfaces/database"
 	"github.com/Luftalian/Clean_Architecture/usecase"
@@ -34,7 +32,7 @@ func (controller *UserController) Create(c Context) {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
-	if u.UserID != uuid.Nil || !u.CreatedAt.IsZero() {
+	if u.UserID != domain.Nil || !u.CreatedAt.IsZero() {
 		log.Printf("UserID and CreatedAt must be empty")
 		c.JSON(http.StatusBadRequest, "UserID and CreatedAt must be empty")
 		return
@@ -62,7 +60,7 @@ func (controller *UserController) Index(c Context) {
 }
 
 func (controller *UserController) Show(c Context) {
-	id, err := uuid.Parse(c.Param("id"))
+	id, err := controller.Interactor.Parse(c.Param("id"))
 	if err != nil {
 		log.Printf("Error getting user: %v", err)
 		c.JSON(http.StatusBadRequest, err)
