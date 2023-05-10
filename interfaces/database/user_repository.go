@@ -8,7 +8,6 @@ import (
 
 type UserRepository struct {
 	DbHandler
-	UUIDHandler
 }
 
 func (repo *UserRepository) FindAll() (domain.Users, error) {
@@ -30,7 +29,6 @@ func (repo *UserRepository) FindByID(id domain.UUID) (domain.User, error) {
 }
 
 func (repo *UserRepository) Store(user domain.User) (domain.User, error) {
-	user.UserID = repo.New()
 	user.CreatedAt = time.Now()
 	_, err := repo.Exec("INSERT INTO users (user_id, name, created_at) VALUES (?, ?, ?)", user.UserID, user.Name, user.CreatedAt)
 	if err != nil {

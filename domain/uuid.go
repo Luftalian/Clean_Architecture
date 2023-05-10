@@ -1,6 +1,6 @@
 package domain
 
-type UUID [16]byte
+type UUID any
 
 var (
 	Nil UUID // empty UUID, all zeros

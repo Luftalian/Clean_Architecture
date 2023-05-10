@@ -5,7 +5,11 @@ import (
 	"github.com/google/uuid"
 )
 
-type UUIDHandler struct {
+type UUIDHandler struct{}
+
+func NewUUIDHandler() *UUIDHandler {
+	uuidHandler := new(UUIDHandler)
+	return uuidHandler
 }
 
 func (u *UUIDHandler) New() domain.UUID {

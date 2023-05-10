@@ -13,18 +13,17 @@ type UserController struct {
 	Interactor usecase.UserInteractor
 }
 
-func NewUserController(handler database.DbHandler, uuidHandler database.UUIDHandler) *UserController {
+func NewUserController(handler database.DbHandler, uuidHandler UUIDHandler) *UserController {
 	return &UserController{
 		Interactor: usecase.UserInteractor{
 			UserRepository: &database.UserRepository{
-				DbHandler:   handler,
-				UUIDHandler: uuidHandler,
+				DbHandler: handler,
 			},
 		},
 	}
 }
 
-func (controller *UserController) Create(c Context) {
+func (controller *UserController) Create(c Context, uuidHandler UUIDHandler) {
 	log.Println("Create user")
 	u := domain.User{}
 	if err := c.Bind(&u); err != nil {
@@ -37,6 +36,7 @@ func (controller *UserController) Create(c Context) {
 		c.JSON(http.StatusBadRequest, "UserID and CreatedAt must be empty")
 		return
 	}
+	u.UserID = uuidHandler.New()
 	user, err := controller.Interactor.Add(u)
 	if err != nil {
 		log.Printf("Error creating user: %v", err)
@@ -59,8 +59,8 @@ func (controller *UserController) Index(c Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func (controller *UserController) Show(c Context) {
-	id, err := controller.Interactor.Parse(c.Param("id"))
+func (controller *UserController) Show(c Context, uuidHandler UUIDHandler) {
+	id, err := uuidHandler.Parse(c.Param("id"))
 	if err != nil {
 		log.Printf("Error getting user: %v", err)
 		c.JSON(http.StatusBadRequest, err)

@@ -29,7 +29,7 @@ func init() {
 
 	// e := e.Group("/api")
 	e.POST("/users", func(c echo.Context) error {
-		userController.Create(c)
+		userController.Create(c, uuidHandler)
 		return nil
 	})
 	e.GET("/users", func(c echo.Context) error {
@@ -37,7 +37,8 @@ func init() {
 		return nil
 	})
 	e.GET("/users/:id", func(c echo.Context) error {
-		userController.Show(c)
+		uuidHandler := NewUUIDHandler()
+		userController.Show(c, uuidHandler)
 		return nil
 	})
 

@@ -1,4 +1,4 @@
-package database
+package controller
 
 import "github.com/Luftalian/Clean_Architecture/domain"
 
