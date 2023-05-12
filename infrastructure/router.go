@@ -23,11 +23,13 @@ func init() {
 	e.Use(middleware.Logger())
 	e.Use(session.Middleware(store))
 
+	uuidHandler := new(UUIDHandler)
+
 	userController := controller.NewUserController(dbHandler)
 
 	// e := e.Group("/api")
 	e.POST("/users", func(c echo.Context) error {
-		userController.Create(c)
+		userController.Create(c, uuidHandler)
 		return nil
 	})
 	e.GET("/users", func(c echo.Context) error {
@@ -35,7 +37,7 @@ func init() {
 		return nil
 	})
 	e.GET("/users/:id", func(c echo.Context) error {
-		userController.Show(c)
+		userController.Show(c, uuidHandler)
 		return nil
 	})
 

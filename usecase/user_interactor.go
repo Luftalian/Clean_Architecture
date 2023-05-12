@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"github.com/google/uuid"
-
 	"github.com/Luftalian/Clean_Architecture/domain"
 )
 
@@ -26,7 +24,7 @@ func (interactor *UserInteractor) Users() (domain.Users, error) {
 	return users, nil
 }
 
-func (interactor *UserInteractor) UserByID(id uuid.UUID) (domain.User, error) {
+func (interactor *UserInteractor) UserByID(id domain.UUID) (domain.User, error) {
 	user, err := interactor.UserRepository.FindByID(id)
 	if err != nil {
 		return domain.User{}, err

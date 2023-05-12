@@ -4,8 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/google/uuid"
-
 	"github.com/Luftalian/Clean_Architecture/domain"
 	"github.com/Luftalian/Clean_Architecture/interfaces/database"
 	"github.com/Luftalian/Clean_Architecture/usecase"
@@ -25,7 +23,7 @@ func NewUserController(handler database.DbHandler) *UserController {
 	}
 }
 
-func (controller *UserController) Create(c Context) {
+func (controller *UserController) Create(c Context, uuidHandler UUIDHandler) {
 	log.Println("Create user")
 	u := domain.User{}
 	if err := c.Bind(&u); err != nil {
@@ -33,11 +31,12 @@ func (controller *UserController) Create(c Context) {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
-	if u.UserID != uuid.Nil || !u.CreatedAt.IsZero() {
+	if u.UserID != domain.Nil || !u.CreatedAt.IsZero() {
 		log.Printf("UserID and CreatedAt must be empty")
 		c.JSON(http.StatusBadRequest, "UserID and CreatedAt must be empty")
 		return
 	}
+	u.UserID = uuidHandler.New()
 	user, err := controller.Interactor.Add(u)
 	if err != nil {
 		log.Printf("Error creating user: %v", err)
@@ -60,8 +59,8 @@ func (controller *UserController) Index(c Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func (controller *UserController) Show(c Context) {
-	id, err := uuid.Parse(c.Param("id"))
+func (controller *UserController) Show(c Context, uuidHandler UUIDHandler) {
+	id, err := uuidHandler.Parse(c.Param("id"))
 	if err != nil {
 		log.Printf("Error getting user: %v", err)
 		c.JSON(http.StatusBadRequest, err)
