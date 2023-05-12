@@ -37,7 +37,6 @@ func init() {
 		return nil
 	})
 	e.GET("/users/:id", func(c echo.Context) error {
-		uuidHandler := NewUUIDHandler()
 		userController.Show(c, uuidHandler)
 		return nil
 	})
